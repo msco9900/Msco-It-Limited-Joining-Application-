@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSCO IT LIMITED | Professional IT Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --accent: #06b6d4;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body { 
+            background: var(--bg-gradient); 
+            color: var(--text-main); 
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .overlay { 
+            min-height: 100vh; 
+            padding: 20px; 
+            background: url('https://www.transparenttextures.com/patterns/cubes.png');
+        }
+
+        .container { width: 100%; max-width: 850px; margin: 0 auto; }
+
+        /* Navigation */
+        nav { position: fixed; top: 25px; right: 25px; z-index: 1000; }
+        .menu-dots { 
+            font-size: 32px; cursor: pointer; color: var(--accent); 
+            transition: 0.3s; background: var(--glass); width: 50px; height: 50px;
+            display: flex; align-items: center; justify-content: center; border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        .menu-dots:hover { background: var(--primary); color: #fff; }
+        
+        .dropdown { 
+            display: none; position: absolute; right: 0; top: 60px;
+            background: #1e293b; border: 1px solid var(--border); 
+            border-radius: 15px; width: 220px; backdrop-filter: blur(20px); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4); overflow: hidden;
+        }
+        .dropdown a { 
+            display: block; padding: 15px 20px; color: #cbd5e1; text-decoration: none; 
+            font-size: 14px; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.05); 
+            transition: 0.3s;
+        }
+        .dropdown a:hover { background: var(--primary); color: #fff; padding-left: 25px; }
+
+        /* Content Blocks */
+        .view { 
+            display: none; background: var(--glass); padding: 40px; 
+            border-radius: 24px; border: 1px solid var(--border); 
+            backdrop-filter: blur(15px); animation: fadeIn 0.6s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .view.active { display: block; }
+
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        header h1 { 
+            font-family: 'Bebas Neue'; font-size: 4.5rem; 
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-align: center; letter-spacing: 4px;
+        }
+        
+        .sec-title { 
+            font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.8rem; 
+            color: var(--accent); margin: 25px 0; display: flex; align-items: center; gap: 10px;
+        }
+        .sec-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        input, select, textarea { 
+            background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border); 
+            padding: 12px 15px; color: #fff; border-radius: 10px; outline: none; 
+            width: 100%; transition: 0.3s; font-size: 14px;
+        }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); }
+
+        .btn-main { 
+            width: 100%; padding: 16px; background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: #fff; border: none; font-weight: 600; font-size: 1.1rem; 
+            border-radius: 12px; cursor: pointer; transition: 0.3s; margin-top: 10px;
+        }
+        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3); }
+
+        .btn-del { background: #ef4444; color: #fff; padding: 6px 12px; border: none; cursor: pointer; border-radius: 6px; font-size: 11px; transition: 0.2s; }
+        .btn-del:hover { opacity: 0.8; }
+        .btn-toggle { background: #3b82f6; color: #fff; padding: 6px 12px; border: none; cursor: pointer; border-radius: 6px; font-size: 11px; margin-right: 5px; }
+
+        .status-badge { font-size: 10px; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; font-weight: 700; }
+        .status-open { background: #22c55e; color: #fff; }
+        .status-closed { background: #64748b; color: #fff; }
+
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .admin-table th { color: var(--accent); text-align: left; padding: 12px; font-size: 14px; text-transform: uppercase; border-bottom: 2px solid var(--border); }
+        .admin-table td { padding: 15px 12px; border-bottom: 1px solid var(--border); font-size: 14px; }
+
+        footer { text-align: center; padding: 60px 0; opacity: 0.5; font-size: 11px; letter-spacing: 1px; }
+
+        .radio-label { display: flex; align-items: center; gap: 10px; cursor: pointer; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 8px; }
+        .q-builder-card { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="overlay">
+    <div class="container">
+        <nav>
+            <div class="menu-dots" id="dots-btn">⋮</div>
+            <div class="dropdown" id="mainMenu">
+                <a href="#" id="homeLink">🏠 Home</a>
+                <a href="#" id="loginLink">🔑 Admin Portal</a>
+                <a href="#" id="dashLink" style="display:none;">📊 Dashboard</a>
+                <a href="#" id="manageLink" style="display:none;">👥 Manage Team</a>
+                <a href="#" id="logoutLink" style="display:none;">🚪 Logout</a>
+            </div>
+        </nav>
+
+        <header style="padding: 60px 0 40px; text-align: center;">
+            <h1>MSCO IT LIMITED</h1>
+            <p style="color:var(--accent); letter-spacing: 4px; font-weight: 600; font-size: 12px; text-transform: uppercase; margin-top: 10px;">Innovating The Future of Freelancing</p>
+        </header>
+
+        <div id="view-home" class="view active">
+            <h2 class="sec-title">OPEN OPPORTUNITIES</h2>
+            <div id="public-list"></div>
+        </div>
+
+        <div id="view-apply" class="view">
+            <h2 id="apply-title" class="sec-title">APPLICATION FORM</h2>
+            <form action="https://formspree.io/f/xjglwowa" method="POST" id="dynamic-form">
+                <input type="hidden" name="Position" id="form-pos-hidden">
+                <div id="form-questions-container"></div>
+                <button type="submit" class="btn-main">SUBMIT APPLICATION</button>
+            </form>
+        </div>
+
+        <div id="view-login" class="view">
+            <h2 class="sec-title">SECURE LOGIN</h2>
+            <input type="password" id="passInput" placeholder="Enter Administrator Passcode" style="margin-top:10px;">
+            <button class="btn-main" id="login-btn">ACCESS DASHBOARD</button>
+        </div>
+
+        <div id="view-dash" class="view">
+            <div style="background:var(--primary); padding:8px 15px; border-radius:10px; font-size:12px; font-weight: 600; display:inline-block; margin-bottom:20px;">DASHBOARD ACTIVE: <span id="op-name"></span></div>
+            <h2 class="sec-title">POST NEW ROLE</h2>
+            <input type="text" id="admin-title" placeholder="Position Title (e.g. Web Developer)" style="margin-bottom:20px;">
+            
+            <div id="questions-builder"></div>
+            <button class="btn-main" id="publish-btn">PUBLISH VACANCY</button>
+
+            <h2 class="sec-title" style="margin-top:40px;">MANAGEMENT CONSOLE</h2>
+            <div style="overflow-x:auto;">
+                <table class="admin-table">
+                    <thead><tr><th>Position</th><th>Status</th><th>Control</th></tr></thead>
+                    <tbody id="admin-live-table"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="view-manage" class="view">
+            <h2 class="sec-title">TEAM ACCESS</h2>
+            <div class="q-builder-card">
+                <input type="text" id="new-staff-name" placeholder="Member Name">
+                <input type="text" id="new-staff-pass" placeholder="Assign Passcode" style="margin-top:10px;">
+                <button class="btn-main" id="add-staff-btn">ADD MEMBER</button>
+            </div>
+            <div id="staff-list-container"></div>
+        </div>
+
+        <footer>© 2026 MSCO IT LIMITED | POWERED BY SHAFIN MIRZA | GLOBAL TECH SOLUTIONS</footer>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+    import { getDatabase, ref, push, onValue, get, update, remove } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-database.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCBirOOy2uQbVHcV5k7wq0cgG8IE8K-H_s",
+        authDomain: "msco-it-limited.firebaseapp.com",
+        databaseURL: "https://msco-it-limited-default-rtdb.firebaseio.com",
+        projectId: "msco-it-limited",
+        storageBucket: "msco-it-limited.firebasestorage.app",
+        messagingSenderId: "765616797625",
+        appId: "1:765616797625:web:b32540f157c1f5f109e868",
+        measurementId: "G-PS61HG39LX"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+
+    const FIXED_ADMIN_EMAIL = "admin@msco.com";
+
+    window.showView = function(id) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.getElementById('mainMenu').style.display = 'none';
+        if(id === 'view-home') loadPublicPosts();
+        if(id === 'view-dash') loadAdminTable();
+        if(id === 'view-manage') loadStaffList();
+    }
+
+    document.getElementById('dots-btn').onclick = () => {
+        const m = document.getElementById('mainMenu');
+        m.style.display = m.style.display === 'block' ? 'none' : 'block';
+    };
+
+    document.getElementById('homeLink').onclick = () => {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById('view-home').classList.add('active');
+        loadPublicPosts();
+    };
+
+    document.getElementById('loginLink').onclick = () => showView('view-login');
+    document.getElementById('dashLink').onclick = () => showView('view-dash');
+    document.getElementById('manageLink').onclick = () => showView('view-manage');
+    
+    document.getElementById('logoutLink').onclick = async () => {
+        await signOut(auth);
+        localStorage.removeItem('user_role');
+        localStorage.removeItem('ahypar_user');
+        location.reload();
+    };
+
+    // --- LOGIN LOGIC ---
+    document.getElementById('login-btn').onclick = async () => {
+        const pass = document.getElementById('passInput').value.trim();
+        if(!pass) return alert("Enter Passcode");
+        
+        try {
+            await signInWithEmailAndPassword(auth, FIXED_ADMIN_EMAIL, pass);
+            localStorage.setItem('user_role', 'master');
+            showView('view-dash');
+        } catch (error) {
+            const snap = await get(ref(db, 'staff_access'));
+            const staffs = snap.val() || {};
+            let foundStaff = Object.values(staffs).find(s => String(s.pass) === pass);
+
+            if(foundStaff) {
+                localStorage.setItem('ahypar_user', JSON.stringify({name: foundStaff.name, role: 'staff'}));
+                localStorage.setItem('user_role', 'staff');
+                updateUI();
+                showView('view-dash');
+            } else {
+                alert("Error: Incorrect Access Key.");
+            }
+        }
+    };
+
+    function updateUI() {
+        const userRole = localStorage.getItem('user_role');
+        const user = JSON.parse(localStorage.getItem('ahypar_user'));
+        
+        if (userRole) {
+            document.getElementById('loginLink').style.display = 'none';
+            document.getElementById('dashLink').style.display = 'block';
+            document.getElementById('logoutLink').style.display = 'block';
+            
+            if(userRole === 'master') {
+                document.getElementById('op-name').innerText = "Administrator";
+                document.getElementById('manageLink').style.display = 'block';
+            } else {
+                document.getElementById('op-name').innerText = user ? user.name : "Staff";
+                document.getElementById('manageLink').style.display = 'none';
+            }
+        }
+    }
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            localStorage.setItem('user_role', 'master');
+            updateUI();
+        }
+    });
+
+    // --- RECRUITMENT BUILDER ---
+    const builder = document.getElementById('questions-builder');
+    for(let i=1; i<=8; i++) {
+        builder.innerHTML += `
+            <div class="q-builder-card">
+                <div style="display:flex; gap:10px; margin-bottom:10px;">
+                    <span style="color:var(--accent); font-weight:bold;">${i}</span>
+                    <input type="text" id="q-text-${i}" placeholder="Question text">
+                    <select id="q-type-${i}" style="width:120px;" onchange="toggleOptions(${i})">
+                        <option value="short">Short</option>
+                        <option value="para">Para</option>
+                        <option value="check">Options</option>
+                    </select>
+                </div>
+                <div id="opts-container-${i}" style="display:none; gap:10px;">
+                    <input type="text" id="q-opt1-${i}" placeholder="Option A">
+                    <input type="text" id="q-opt2-${i}" placeholder="Option B">
+                </div>
+                <label style="font-size:12px;"><input type="checkbox" id="q-req-${i}" checked> Mandatory</label>
+            </div>`;
+    }
+
+    window.toggleOptions = (i) => {
+        const type = document.getElementById(`q-type-${i}`).value;
+        document.getElementById(`opts-container-${i}`).style.display = (type === 'check') ? 'flex' : 'none';
+    };
+
+    document.getElementById('publish-btn').onclick = () => {
+        const title = document.getElementById('admin-title').value;
+        let questions = [];
+        for(let i=1; i<=8; i++) {
+            const text = document.getElementById(`q-text-${i}`).value;
+            if(text) questions.push({
+                text, type: document.getElementById(`q-type-${i}`).value,
+                required: document.getElementById(`q-req-${i}`).checked,
+                opt1: document.getElementById(`q-opt1-${i}`).value, opt2: document.getElementById(`q-opt2-${i}`).value
+            });
+        }
+        if(questions.length < 7) return alert("Min 7 questions required.");
+        if(!title) return alert("Title required.");
+
+        push(ref(db, 'recruitment_forms'), { title, questions, status: 'open' }).then(() => {
+            alert("Role Published!");
+            location.reload();
+        });
+    };
+
+    function loadPublicPosts() {
+        onValue(ref(db, 'recruitment_forms'), (snapshot) => {
+            const data = snapshot.val() || {};
+            const container = document.getElementById('public-list');
+            container.innerHTML = '';
+            Object.keys(data).forEach(key => {
+                const item = data[key];
+                const div = document.createElement('div');
+                div.className = 'q-builder-card';
+                div.style.cursor = item.status === 'open' ? 'pointer' : 'not-allowed';
+                div.onclick = () => { if(item.status==='open') renderUserForm(item); };
+                div.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div><h3 style="color:#fff;">${item.title}</h3><small style="color:var(--accent);">${item.status === 'open' ? 'Click to Apply' : 'Not accepting responses'}</small></div>
+                        <span class="status-badge status-${item.status}">${item.status}</span>
+                    </div>`;
+                container.appendChild(div);
+            });
+        });
+    }
+
+    function renderUserForm(formData) {
+        showView('view-apply');
+        document.getElementById('apply-title').innerText = formData.title;
+        document.getElementById('form-pos-hidden').value = formData.title;
+        const container = document.getElementById('form-questions-container');
+        container.innerHTML = '';
+        formData.questions.forEach((q, idx) => {
+            let html = `<div style="margin-bottom:20px;"><label style="display:block; margin-bottom:8px; font-weight:600;">${q.text}</label>`;
+            if(q.type === 'short') html += `<input type="text" name="Q${idx+1}" ${q.required?'required':''}>`;
+            else if(q.type === 'para') html += `<textarea name="Q${idx+1}" rows="3" ${q.required?'required':''}></textarea>`;
+            else if(q.type === 'check') html += `
+                <label class="radio-label"><input type="radio" name="Q${idx+1}" value="${q.opt1}" ${q.required?'required':''}> ${q.opt1}</label>
+                <label class="radio-label"><input type="radio" name="Q${idx+1}" value="${q.opt2}" ${q.required?'required':''}> ${q.opt2}</label>`;
+            container.innerHTML += html + `</div>`;
+        });
+    }
+
+    // --- DASHBOARD TABLE WITH DELETE & TOGGLE ---
+    async function loadAdminTable() {
+        const snapshot = await get(ref(db, 'recruitment_forms'));
+        const data = snapshot.val() || {};
+        const tbody = document.getElementById('admin-live-table');
+        tbody.innerHTML = '';
+        
+        Object.keys(data).forEach(key => {
+            const item = data[key];
+            const tr = document.createElement('tr');
+            
+            tr.innerHTML = `
+                <td>${item.title}</td>
+                <td><span class="status-badge status-${item.status}">${item.status}</span></td>
+                <td>
+                    <button class="btn-toggle" id="tgl-${key}">Toggle</button>
+                    <button class="btn-del" id="del-${key}">Delete</button>
+                </td>`;
+            
+            tbody.appendChild(tr);
+
+            // Toggle Open/Closed
+            document.getElementById(`tgl-${key}`).onclick = () => {
+                const newStatus = item.status === 'open' ? 'closed' : 'open';
+                update(ref(db, 'recruitment_forms/' + key), { status: newStatus }).then(loadAdminTable);
+            };
+
+            // Delete Post (Any Dashboard User)
+            document.getElementById(`del-${key}`).onclick = () => {
+                if(confirm("Permanently delete this vacancy?")) {
+                    remove(ref(db, 'recruitment_forms/' + key)).then(() => {
+                        alert("Position Removed.");
+                        loadAdminTable();
+                    });
+                }
+            };
+        });
+    }
+
+    // --- STAFF MANAGEMENT ---
+    document.getElementById('add-staff-btn').onclick = () => {
+        const name = document.getElementById('new-staff-name').value;
+        const pass = document.getElementById('new-staff-pass').value;
+        if(name && pass) push(ref(db, 'staff_access'), {name, pass}).then(loadStaffList);
+    };
+
+    function loadStaffList() {
+        onValue(ref(db, 'staff_access'), (snapshot) => {
+            const list = snapshot.val() || {};
+            const container = document.getElementById('staff-list-container');
+            container.innerHTML = '';
+            Object.keys(list).forEach(key => {
+                const div = document.createElement('div');
+                div.className = 'q-builder-card';
+                div.style.display = 'flex';
+                div.style.justifyContent = 'space-between';
+                div.style.alignItems = 'center';
+                div.innerHTML = `<span>${list[key].name} (Key: ${list[key].pass})</span>`;
+                const btn = document.createElement('button');
+                btn.className = 'btn-del';
+                btn.innerText = 'Revoke';
+                btn.onclick = () => remove(ref(db, 'staff_access/' + key));
+                div.appendChild(btn);
+                container.appendChild(div);
+            });
+        });
+    }
+
+    loadPublicPosts();
+    updateUI();
+</script>
+</body>
+</html>
