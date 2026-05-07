@@ -187,20 +187,24 @@
 </div>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-    import { getDatabase, ref, push, onValue, get, update, remove } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-database.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyCBirOOy2uQbVHcV5k7wq0cgG8IE8K-H_s",
-        authDomain: "msco-it-limited.firebaseapp.com",
-        databaseURL: "https://msco-it-limited-default-rtdb.firebaseio.com",
-        projectId: "msco-it-limited",
-        storageBucket: "msco-it-limited.firebasestorage.app",
-        messagingSenderId: "765616797625",
-        appId: "1:765616797625:web:b32540f157c1f5f109e868",
-        measurementId: "G-PS61HG39LX"
-    };
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCBirOOy2uQbVHcV5k7wq0cgG8IE8K-H_s",
+    authDomain: "msco-it-limited.firebaseapp.com",
+    databaseURL: "https://msco-it-limited-default-rtdb.firebaseio.com",
+    projectId: "msco-it-limited",
+    storageBucket: "msco-it-limited.firebasestorage.app",
+    messagingSenderId: "765616797625",
+    appId: "1:765616797625:web:d9e762751862c3c009e868",
+    measurementId: "G-20TL5KFELZ"
+  };
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
