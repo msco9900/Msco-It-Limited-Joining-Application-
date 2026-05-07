@@ -7,9 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <!-- Firebase App (compat SDK) -->
-    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
 
     <style>
         :root {
@@ -338,7 +338,7 @@
     <!-- DASHBOARD -->
     <div id="view-dash" class="view">
         <div class="op-badge">📡 Active Operator: Shafin_Mirza <span id="op-name"></span></div>
-        <h2 class="sec-title">Course Builder</h2>
+        <h2 class="sec-title">Application Builder</h2>
         <input type="text" id="admin-title" placeholder="e.g. Advanced Web Development" style="margin-bottom:20px; border-color:var(--border);">
 
         <div id="questions-builder">
@@ -369,7 +369,8 @@
                 }
             </script>
         </div>
-        <button class="btn-main" onclick="publishForm()">🚀 Publish Course</button>
+        <button class="btn-main" onclick="publishForm()">
+           Publish Application </button>
 
         <h2 class="sec-title" style="margin-top:48px;">Live Application</h2>
         <div style="overflow-x:auto;">
@@ -397,17 +398,17 @@
 </div>
 
 <script>
-    // ── Firebase Init (MSCO IT Limited) ────────────────────────────────────
+    // ── Firebase Init (MSCO IT Limited) ────────────────────────────
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyCBirOOy2uQbVHcV5k7wq0cgG8IE8K-H_s",
-    authDomain: "msco-it-limited.firebaseapp.com",
-    databaseURL: "https://msco-it-limited-default-rtdb.firebaseio.com",
-    projectId: "msco-it-limited",
-    storageBucket: "msco-it-limited.firebasestorage.app",
-    messagingSenderId: "765616797625",
-    appId: "1:765616797625:web:16635fa0dcaaa1ab09e868",
-    measurementId: "G-KV79EWEQJJ"
+    apiKey: "AIzaSyACwZDPoh9SU0GYsnD4uzHkPKnbMdUZkJg",
+    authDomain: "communication-fa4da.firebaseapp.com",
+    databaseURL: "https://communication-fa4da-default-rtdb.firebaseio.com",
+    projectId: "communication-fa4da",
+    storageBucket: "communication-fa4da.firebasestorage.app",
+    messagingSenderId: "667485469607",
+    appId: "1:667485469607:web:d05681847fee6a3d24d482",
+    measurementId: "G-K3GBK8LQ70"
 };
 
     firebase.initializeApp(firebaseConfig);
@@ -568,7 +569,7 @@ const firebaseConfig = {
             c.innerHTML = '';
             const keys = Object.keys(data);
             if (!keys.length) {
-                c.innerHTML = '<p style="color:var(--muted); font-size:14px; text-align:center; padding:30px 0;">No courses currently open. Check back soon.</p>';
+                c.innerHTML = '<p style="color:var(--muted); font-size:14px; text-align:center; padding:30px 0;">No Application currently open. Check back soon.</p>';
                 return;
             }
             keys.forEach(key => {
